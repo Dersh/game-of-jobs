@@ -11,7 +11,7 @@ public class MailsReceiver : InteractableItem
     {
         try
         {
-            if (ItemsBuffer.Instance.GetChosenItem().GetComponent<InteractableItem>().TypeMatches(Type))
+            if (ItemsBuffer.Instance.GetChosenItem().GetComponent<Mail>().TypeMatches(_type))
             {
                 ItemsBuffer.Instance.PullFromBuffer(ItemsBuffer.Instance.GetChosenItem(), GeneratePos());
                 putInRightBox();

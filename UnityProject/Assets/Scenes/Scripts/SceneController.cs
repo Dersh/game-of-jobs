@@ -6,9 +6,10 @@ public class SceneController : MonoBehaviour
     private void Awake()
     {
         SceneManager.LoadScene(_sceneName);
-        for (int i = 0; i < transform.childCount; i++)
+        GameObject[] all = FindObjectsOfType<GameObject>();
+        for (int i = 0; i < all.Length; i++)
         {
-            DontDestroyOnLoad(transform.GetChild(i).gameObject);
+            DontDestroyOnLoad(all[i]);
         }
     }
 }

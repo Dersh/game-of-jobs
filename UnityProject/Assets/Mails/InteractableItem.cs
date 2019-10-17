@@ -11,23 +11,16 @@ public abstract class InteractableItem : MonoBehaviour
         if (_player == null)
             _player = GameObject.Find("Player").transform;
     }
-
-    public enum Sort : int
+    public enum Sort : byte
     {
-        Green = 0,
-        Yellow = 1,
-        Red = 2
+        Green,
+        Yellow,
+        Red
     }
-    [SerializeField] protected Sort Type;
-
+    [SerializeField] protected Sort _type;
     public bool TypeMatches(Sort type)
     {
-        return Type == type;
-    }
-    [SerializeField] private Sprite[] _icons;
-    public Sprite GetIcon()
-    {
-        return _icons[(int)Type];
+        return _type == type;
     }
     protected abstract void OnInteract();
     private const float MinDistance = 5;

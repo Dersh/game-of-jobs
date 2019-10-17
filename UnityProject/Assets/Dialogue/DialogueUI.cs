@@ -92,9 +92,9 @@ public class DialogueUI : MonoBehaviour
         }
         if (suggestions.Length == 0)
             onNoSuggestions();
-        float canvasWidth = _menuCanvas.GetComponent<RectTransform>().sizeDelta.x;
+        /*float canvasWidth = _menuCanvas.GetComponent<RectTransform>().sizeDelta.x;
         _suggestionsList.GetComponent<RectTransform>().sizeDelta = new Vector2(canvasWidth - AnswerMargin * 2, _suggestionsTexts.Length * CellHeight);
-        _suggestionsList.cellSize = new Vector2(canvasWidth - AnswerMargin * 2, CellHeight);
+        _suggestionsList.cellSize = new Vector2(canvasWidth - AnswerMargin * 2, CellHeight);*/
         ShowSuggestions();
     }
 

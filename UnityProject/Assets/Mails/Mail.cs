@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mail : InteractableItem
+public class Mail : PickableItem
 {
     protected override void OnInteract()
     {

@@ -80,11 +80,10 @@ public class ItemsBuffer : MonoBehaviour
     }
     private void UpdateInventory()
     {
-        Debug.Log(_buffer);
         InventoryUI.Instance.ClearInventory();
         for (int i = 0; i < _buffer.Count; i++)
         {
-            InventoryUI.Instance.UpdateInventory(_buffer[i].GetComponent<InteractableItem>().GetIcon(), i);
+            InventoryUI.Instance.UpdateInventory(_buffer[i].GetComponent<PickableItem>().GetIcon(), i);
         }
     }
     private bool ChooseItem(int index)
