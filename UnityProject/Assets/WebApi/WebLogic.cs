@@ -9,13 +9,13 @@ public class WebLogic : MonoBehaviour
     
     private void Start()
     {
-        SceneManager.activeSceneChanged += OnActiveSceneChanged;
+        SceneManager.sceneLoaded += OnActiveSceneChanged;
     }
     private void Update()
     {
         CheckSendLog();
     }
-    private void OnActiveSceneChanged(Scene from, Scene to)
+    private void OnActiveSceneChanged(Scene from, LoadSceneMode mode)
     {
         _quests = FindObjectsOfType<Quest>();
     }

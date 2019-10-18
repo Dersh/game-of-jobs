@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,12 +17,12 @@ public class ItemsBuffer : MonoBehaviour
         }
     }
 
-    [SerializeField]private List<GameObject> _buffer;
+    [SerializeField] private int _count;
+    private GameObject[] _buffer;
     private int _chosen;
     private void Awake()
     {
-        _buffer = new List<GameObject>();
-        _buffer.Capacity = 3;
+        _buffer = new GameObject[_count];
         if (GameObject.Find("Inventory") == null)
             throw new System.Exception("Can't find \'Inventory\' object");
         InventoryUI.Instance.SetOnClickButtons((byte b) => {
@@ -30,29 +32,29 @@ public class ItemsBuffer : MonoBehaviour
 
     public bool TryInsertBuffer(GameObject target)
     {
-        
-        if (_buffer.Count == 3)
-        {
+        int index = GetFirstIndex();
+        if (index == -1)
             return false;
-        }
-        else
-        {
-            InsertBuffer(target);
-            return true;
-        }
+        _buffer[index] = target;
+        target.SetActive(false);
+        UpdateInventory();
+        return true;
     }
     public GameObject GetChosenItem()
     {
-        if (_chosen < _buffer.Count)
+        if (_chosen < _buffer.Length)
             return _buffer[_chosen];
         else
             return null;
     }
+    [System.Obsolete]
     public bool PullFromBuffer(GameObject target)
     {
         if (_buffer.Contains(target))
         {
-            _buffer.Remove(target);
+            for (int i = 0; i < _buffer.Length; i++)
+                if (target == _buffer[i])
+                    _buffer[i] = null;
             target.SetActive(true);
             UpdateInventory();
             return true;
@@ -63,7 +65,9 @@ public class ItemsBuffer : MonoBehaviour
     {
         if (_buffer.Contains(target))
         {
-            _buffer.Remove(target);
+            for (int i = 0; i < _buffer.Length; i++)
+                if (target == _buffer[i])
+                    _buffer[i] = null;
             target.SetActive(true);
             target.transform.position = pos;
             UpdateInventory();
@@ -71,24 +75,24 @@ public class ItemsBuffer : MonoBehaviour
         }
         else return false;
     }
-
-    private void InsertBuffer(GameObject target)
+    private int GetFirstIndex()
     {
-        _buffer.Add(target);
-        target.SetActive(false);
-        UpdateInventory();
+        for (int i = 0; i < _buffer.Length; i++)
+            if (_buffer[i] == null)
+                return i;
+        return -1;
     }
     private void UpdateInventory()
     {
         InventoryUI.Instance.ClearInventory();
-        for (int i = 0; i < _buffer.Count; i++)
-        {
-            InventoryUI.Instance.UpdateInventory(_buffer[i].GetComponent<PickableItem>().GetIcon(), i);
-        }
+        for (int i = 0; i < _buffer.Length; i++)
+            if (_buffer[i] != null)
+                InventoryUI.Instance.UpdateInventory(_buffer[i].GetComponent<PickableItem>().GetIcon(), i);
     }
     private bool ChooseItem(int index)
     {
-        if (_buffer.Count < index)
+        Debug.Log(index);
+        if (_buffer[index] == null)
             return false;
         _chosen = index;
         InventoryUI.Instance.HighlightCell(index);

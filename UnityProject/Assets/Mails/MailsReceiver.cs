@@ -29,8 +29,8 @@ public class MailsReceiver : InteractableItem
     [SerializeField] private Bounds _spaceForItems;
     public Vector3 GeneratePos()
     {
-        Vector3 from = _spaceForItems.center - _spaceForItems.extents;
-        Vector3 to = _spaceForItems.center + _spaceForItems.extents;
+        Vector3 from = transform.position + Vector3.Scale(_spaceForItems.center - _spaceForItems.extents, transform.localScale);
+        Vector3 to = transform.position + Vector3.Scale(_spaceForItems.center + _spaceForItems.extents, transform.localScale);
         return new Vector3(UnityEngine.Random.Range(from.x, to.x), UnityEngine.Random.Range(from.y, to.y), UnityEngine.Random.Range(from.z, to.z));
     }
     private void Start()

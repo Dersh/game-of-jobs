@@ -21,7 +21,22 @@ public class InventoryUI : MonoBehaviour
     {
         for (int i = 0; i < _cells.Count; i++)
         {
-            _cells[i].onClick.AddListener(() => { onClick((byte)i); });
+            byte y = (byte)i;
+            _cells[i].onClick.AddListener(() => { onClick(y); });
+            if (i != 0)
+                _cells[i - 1].onClick.Invoke();
+        }
+    }
+    [SerializeField] private Sprite[] _cellSprites;
+    public void HighlightCell(int index)
+    {
+        for (int i = 0; i < _cells.Count; i++)
+        {
+            Debug.Log(i == index);
+            if (i == index)
+                _cells[index].image.sprite = _cellSprites[1];
+            else
+                _cells[index].image.sprite = _cellSprites[0];
         }
     }
     public void ClearInventory()
@@ -36,13 +51,5 @@ public class InventoryUI : MonoBehaviour
     {
         _icons[index].sprite = icon;
         _icons[index].enabled = true;
-    }
-    public void HighlightCell(int index)
-    {
-        foreach (Button but in _cells)
-        {
-            but.GetComponent<Image>().color = Color.white;
-        }
-        _cells[index].GetComponent<Image>().color = new Color(0.75f, 0.75f, 0.75f, 1);
     }
 }

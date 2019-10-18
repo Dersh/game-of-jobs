@@ -29,6 +29,7 @@ public class DialogueUI : MonoBehaviour
     {
         foreach (Graphic elem in _menuCanvas.GetComponentsInChildren<Graphic>())
             elem.enabled = false;
+
     }
     [SerializeField]
     private Text _answer;
@@ -63,6 +64,7 @@ public class DialogueUI : MonoBehaviour
     }
     private IEnumerator IterateDialogueCoroutine(string name, string answer, string[] suggestions, DefaultDialogueGiver giver)
     {
+        GameObject.Find("Viewport").GetComponent<Image>().enabled = true;
         foreach (Text t in _suggestionsTexts)
             Destroy(t.gameObject);
 
@@ -75,11 +77,13 @@ public class DialogueUI : MonoBehaviour
             onNoAnswer();
 
         _suggestionsTexts = new Text[suggestions.Length];
+        _suggestionsList.GetComponent<RectTransform>().sizeDelta = new Vector2(_suggestionsList.GetComponent<RectTransform>().sizeDelta.x, 100 * _suggestionsTexts.Length);
         for (int i = 0; i < _suggestionsTexts.Length; i++)
         {
             int index = i;
             _suggestionsTexts[index] = new GameObject($"Line {index}").AddComponent<Text>();
             _suggestionsTexts[index].transform.parent = _suggestionsList.transform;
+            _suggestionsTexts[index].transform.localScale = Vector3.one;
             _suggestionsTexts[index].text = $"- {suggestions[index]}";
             _suggestionsTexts[index].color = Color.white;
             _suggestionsTexts[index].font = font;

@@ -19,14 +19,17 @@ public class DefaultDialogueGiver : MonoBehaviour
     {
         _dialogue = new Story(_dialogueJson.text);
         _isInDialogue = true;
+        DialogueUI.Instance.ShowTip(false);
     }
     protected virtual void EndDialogue()
     {
         _isInDialogue = false;
+        DialogueUI.Instance.ShowTip(true);
     }
     protected virtual void InterruptDialogue()
     {
         _isInDialogue = false;
+        DialogueUI.Instance.ShowTip(true);
     }
     public void GiveAnswerSafe(int index)
     {
