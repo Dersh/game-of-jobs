@@ -53,20 +53,24 @@ public class DialogueUI : MonoBehaviour
         _suggestionsList.enabled = true;
     }
 
-    private Coroutine _dialogueIteration;
+    private IEnumerator _dialogueIteration;
     public void IterateDialogue(string name, string answer, string[] suggestions, DefaultDialogueGiver giver)
     {
-        _dialogueIteration = StartCoroutine(IterateDialogueCoroutine(name, answer, suggestions, giver));
+        _dialogueIteration = IterateDialogueCoroutine(name, answer, suggestions, giver);
+        StartCoroutine(_dialogueIteration);
     }
     public void StopDialogue()
     {
         StopCoroutine(_dialogueIteration);
+        _dialogueIteration = null;
     }
     private IEnumerator IterateDialogueCoroutine(string name, string answer, string[] suggestions, DefaultDialogueGiver giver)
     {
         GameObject.Find("Viewport").GetComponent<Image>().enabled = true;
+        GameObject.Find("Scroll View").GetComponent<Image>().enabled = true;
         foreach (Text t in _suggestionsTexts)
-            Destroy(t.gameObject);
+            if (t != null && t.gameObject != null)
+                Destroy(t.gameObject);
 
         ShowAnswer();
         _answer.text = $"[{name}]: {answer}";
